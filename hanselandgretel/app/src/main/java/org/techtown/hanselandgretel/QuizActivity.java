@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -30,6 +32,9 @@ public class QuizActivity extends AppCompatActivity {
         adapter = new Adapter(this);
         viewPager.setAdapter(adapter);
 
+
+        int stagelevel = getIntent().getIntExtra("stageLevel", 0);
+        Log.d("stage",""+stagelevel);
         layout = (ConstraintLayout)findViewById(R.id.layout2);
         new CountDownTask().execute();
 

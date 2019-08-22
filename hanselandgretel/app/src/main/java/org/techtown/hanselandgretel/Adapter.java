@@ -19,7 +19,7 @@ import androidx.viewpager.widget.PagerAdapter;
 public class Adapter extends PagerAdapter {
 
     // R.drawable.(사진파일이름)으로 images 배열 생성
-    private int[] images = {R.drawable.c1, R.drawable.c2, R.drawable.c3, R.drawable.c4, R.drawable.c5};
+    private int[] images = {R.drawable.c1, R.drawable.c2, R.drawable.c3};
     private LayoutInflater inflater;
     private Context context;
 

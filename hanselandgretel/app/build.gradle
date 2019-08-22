@@ -26,10 +26,11 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'com.google.firebase:firebase-analytics:17.0.1'
+    implementation 'com.google.firebase:firebase-analytics:17.1.0'
 
     //구글 인증 모듈과 플레이 서비스. 의존시킴
-    implementation 'com.google.firebase:firebase-auth:18.0.0'
+    implementation 'com.google.firebase:firebase-auth:19.0.0'
+    implementation 'com.google.firebase:firebase-database:19.0.0'  //데이터베이스 종속 항목
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
 
 }
