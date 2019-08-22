@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "274703449775",
+    "firebase_url": "https://hansel-a730c.firebaseio.com",
+    "project_id": "hansel-a730c",
+    "storage_bucket": "hansel-a730c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:274703449775:android:30cfeac9a3f2ebb7",
+        "android_client_info": {
+          "package_name": "org.techtown.hanselandgretel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "274703449775-2srhldlqpq5hrit0nks3u3mlu1j2d0r7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.techtown.hanselandgretel",
+            "certificate_hash": "cb535f377dea603bc20a5155adb73673085cff30"
+          }
+        },
+        {
+          "client_id": "274703449775-i82jme7htuetqspdftp0d8nsffvh40ae.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsZt9ScxFk7LXK8mXTfpQF8YnVN-ys00o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "274703449775-i82jme7htuetqspdftp0d8nsffvh40ae.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
