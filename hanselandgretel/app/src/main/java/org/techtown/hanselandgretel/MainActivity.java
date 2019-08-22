@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,12 +17,19 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    //현재 단계 저장
     private int stagelevel;
+
+    private static MediaPlayer backMusic;
+
+    //private mFirebase Auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //이미지, 버튼 설정
         ImageView cookie = (ImageView) findViewById(R.id.cookie);
         TextView stage = (TextView) findViewById(R.id.stage);
         ImageView logo = (ImageView)findViewById(R.id.logo);
@@ -33,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
         Button key = (Button) findViewById(R.id.key) ;
         Button question = (Button) findViewById(R.id.question) ;
         ImageButton dod = (ImageButton)findViewById(R.id.dod);
+
+
+        //배경음악
+        backMusic = MediaPlayer.create(this, R.raw.bgm);
+        backMusic.setLooping(true);
+        backMusic.start();
 
         //gsp 설정 해줘야함
         gpscur.setText(" 12345"+" . "+"233");
@@ -68,6 +82,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    //음악 출력 메서드
+    @Override
+    protected void onUserLeaveHint() {
+        backMusic.pause();
+        super.onUserLeaveHint();
+    }
+
+    @Override
+    protected void onPostResume() {
+        backMusic.start();
+        super.onPostResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        backMusic.stop();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        backMusic.stop();
+        super.onBackPressed();
     }
 
 
