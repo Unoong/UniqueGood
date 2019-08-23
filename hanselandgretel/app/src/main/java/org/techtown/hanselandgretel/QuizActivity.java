@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -18,14 +19,20 @@ public class QuizActivity extends AppCompatActivity {
     ConstraintLayout layout;
     Adapter adapter;
     ViewPager viewPager;
+    public int stagelevel;
+    public static Context context;
+    String hint[] = {"\'눈\'을 거꾸로 봐보자!","Small..Middle..Large..?,","밭전 자에 테투리를 없애면..?","숫자 세기", "화살표 방향, 초록:green"};
 
-    String hint[] = {"방","탄","최","고"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
 
+        stagelevel = getIntent().getIntExtra("stagelevel", 4);
+        Log.d("stage",""+stagelevel);
+
+        context = this;
         // 아까 만든 view
         viewPager = (ViewPager)findViewById(R.id.view);
         //adapter 초기화
@@ -33,8 +40,8 @@ public class QuizActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
 
-        int stagelevel = getIntent().getIntExtra("stageLevel", 0);
-        Log.d("stage",""+stagelevel);
+
+
         layout = (ConstraintLayout)findViewById(R.id.layout2);
         new CountDownTask().execute();
 
@@ -47,7 +54,7 @@ public class QuizActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            for(int i=3; i>=0; i--){
+            for(int i=10; i>=0; i--){
                 try{Thread.sleep(1000);
                     publishProgress(i);
                 }catch (Exception e){}
@@ -71,8 +78,8 @@ public class QuizActivity extends AppCompatActivity {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(QuizActivity.this);
 
-
-                    builder.setTitle("힌트").setMessage(hint[0]);
+                    Log.d("stagehint : ", ""+stagelevel);
+                    builder.setTitle("힌트").setMessage(hint[stagelevel]);
 
                     AlertDialog alertDialog = builder.create();
 

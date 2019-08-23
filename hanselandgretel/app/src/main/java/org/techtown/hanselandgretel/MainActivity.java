@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     ImageView cookie, logo;
     TextView stage, cur, goal, gpscur, gpsgoal;
 
+    String answers[] = {"곡성","simple","10","ㅊㅍㄱ","seeyouagain"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
         gpscur.setText(" 12345"+" . "+"233");
         gpsgoal.setText(" 19845"+" . "+"4423");
 
+       //답설정
+
         //단계설정 database에서 가져와야함 ***
         Query myMostViewedPostsQuery = mReference.child("users").child(mFirebaseUser.getUid())
                 .orderByChild("stagelevel");
@@ -95,10 +99,11 @@ public class MainActivity extends AppCompatActivity {
 
                         stagelevel = Integer.parseInt(snapshot.getValue().toString());
 
-                        if(stagelevel >= 6){
+                        if(stagelevel >= 5){
                             Toast.makeText(getApplicationContext(),"완료하였으므로 데이터를 초기화 합니다",Toast.LENGTH_LONG).show();
                             stagelevel =0;
                         }
+                        Log.d("mian stage level: ", ""+stagelevel);
                     stage.setText(String.valueOf(stagelevel));
 
                     //int i = Integer.valueOf((String) object);
@@ -121,7 +126,8 @@ public class MainActivity extends AppCompatActivity {
                 //Intent intent = new Intent(getApplicationContext(),quiz.class);
                 //startActivityForResult(intent,sub);//액티비티 띄우기
                 Intent intent = new Intent(MainActivity.this, QuizActivity.class);
-                intent.putExtra("stageLevel", stagelevel);
+                Log.d("stage level btn : ", ""+stagelevel);
+                intent.putExtra("stagelevel", stagelevel);
                 startActivity(intent);
             }
         });
@@ -189,13 +195,13 @@ public class MainActivity extends AppCompatActivity {
         alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String answer = name.getText().toString();
-                if(answer.equalsIgnoreCase("정답"))
+                if(answer.equalsIgnoreCase(answers[stagelevel]))
                 {
                     Toast.makeText(getApplicationContext(),"정답입니다!",Toast.LENGTH_LONG).show();
                     stagelevel++;
-                    if(stagelevel >= 6) {
+                    if(stagelevel >= 5) {
                         Toast.makeText(getApplicationContext(), "미션 Clear!!!--Ending", Toast.LENGTH_LONG).show();
-                        stagelevel =1;
+                        stagelevel =0;
                     }
                     stage.setText(String.valueOf(stagelevel));
 
