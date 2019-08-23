@@ -93,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
         Button question = (Button) findViewById(R.id.question) ;
         ImageButton dod = (ImageButton)findViewById(R.id.dod);
 
+        cookie.bringToFront();
+        stage.bringToFront();
+
 
         //배경음악
         backMusic = MediaPlayer.create(this, R.raw.bgm);

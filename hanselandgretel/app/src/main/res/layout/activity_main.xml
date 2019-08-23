@@ -31,6 +31,9 @@
         android:layout_marginRight="15dp"
         android:layout_marginBottom="20dp"
         android:text="문제 확인"
+        android:background="@drawable/btn_wood"
+        android:textColor="#F2F2F2"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/dod"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -48,6 +51,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.531"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/btn_wood"
+        android:textColor="#000000"
         app:srcCompat="@drawable/dod" />
 
     <Button
@@ -60,19 +65,24 @@
         android:layout_marginRight="15dp"
         android:layout_marginBottom="50dp"
         android:text="KEY 제출"
+        android:background="@drawable/btn_wood"
+        android:textColor="#F2F2F2"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/gpscur"
-        android:layout_width="250dp"
-        android:layout_height="40dp"
+        android:layout_width="180dp"
+        android:layout_height="20dp"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="60dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        android:textColor="#000000"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/cur"
@@ -84,9 +94,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="26dp"
         android:text="0"
+        android:textColor="#F2F2F2"
         android:textSize="30sp"
         app:layout_constraintStart_toEndOf="@+id/cookie"
         app:layout_constraintTop_toTopOf="parent" />
@@ -97,58 +108,68 @@
         android:layout_height="36dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="80dp"
-        android:layout_marginRight="80dp"
+        android:layout_marginRight="95dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/coo" />
 
     <TextView
         android:id="@+id/gpsgoal"
-        android:layout_width="250dp"
-        android:layout_height="19dp"
+        android:layout_width="180dp"
+        android:layout_height="20dp"
         android:layout_marginStart="60dp"
         android:layout_marginLeft="60dp"
         android:layout_marginTop="382dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="163dp"
-        app:layout_constraintBottom_toTopOf="@+id/dod"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        android:textColor="#000000"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/goal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="49dp"
-        android:layout_marginLeft="49dp"
         android:layout_marginTop="382dp"
         android:layout_marginEnd="9dp"
         android:layout_marginRight="9dp"
         android:layout_marginBottom="15dp"
-        android:text="목표위치"
+        android:text="목표위치 : "
+        android:textColor="#000000"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/cur"
         app:layout_constraintEnd_toStartOf="@+id/gpsgoal"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/cur"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="49dp"
-        android:layout_marginLeft="49dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="9dp"
         android:layout_marginRight="9dp"
-        android:text="현재위치"
+        android:text="현재위치 : "
+        android:textColor="#000000"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/gpscur"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goal" />
+        app:layout_constraintTop_toBottomOf="@+id/goal"
+
+
+        />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="150dp"
+        android:layout_height="73dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginRight="13dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/board" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
