@@ -55,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
     ImageView cookie, logo;
     TextView stage, cur, goal, gpscur, gpsgoal;
 
+
+    private Double lamin,lamax, lomin, lomax;
+
     String answers[] = {"곡성","simple","10","ㅊㅍㄱ","seeyouagain"};
 
     @Override
@@ -87,6 +90,10 @@ public class MainActivity extends AppCompatActivity {
 
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
+        lamin = 37.4945768826054;
+        lamax = 37.49731328345044;
+        lomin = 127.07055052635761;
+        lomax = 127.07337987499635;
 
         //인증 정보를 잘 가져오는지 확인하는과정 인스턴스를 가져온다
         mFirebaseAuth =  FirebaseAuth.getInstance();
@@ -121,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
         //backMusic.start();
 
         //gsp 설정 해줘야함
-        gpscur.setText(" 12345"+" . "+"233");
-        gpsgoal.setText(" 19845"+" . "+"4423");
+        gpscur.setText("위치를 준비중입니다.");
+        gpsgoal.setText("위치를 준비중입니다.");
 
         //현재 위치정보 업데이트 메서드**************************
         startLocationService();
@@ -315,15 +322,18 @@ public class MainActivity extends AppCompatActivity {
                 Double latitude = lastLocation.getLatitude();
                 Double longitude = lastLocation.getLongitude();
 
-                gpscur.setText("" + latitude + " , " + longitude);
-                Toast.makeText(getApplicationContext(), "Last Known Location : " + "Latitude : " + latitude + "\nLongitude:" + longitude, Toast.LENGTH_LONG).show();
+                latitude = map(latitude,lamax,lamin,0.0,1000.0);
+                longitude = map(longitude,lomax,lomin,0.0,1000.0);
+
+                gpscur.setText("" + String.format("%.2f", latitude) +" , "+String.format("%.2f", longitude) );
+                //Toast.makeText(getApplicationContext(), "Last Known Location : " + "Latitude : " + latitude + "\nLongitude:" + longitude, Toast.LENGTH_LONG).show();
             }
         } catch(SecurityException ex) {
             ex.printStackTrace();
             Log.d("@@@","error : "+ ex.toString());
         }
 
-        Toast.makeText(getApplicationContext(), "위치 확인이 시작되었습니다. 로그를 확인하세요.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "데이터를 불러옵니다. 잠시만 기다려주세요", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -368,8 +378,12 @@ public class MainActivity extends AppCompatActivity {
             String msg = "Latitude : "+ latitude + "\nLongitude:"+ longitude;
             Log.i("GPSListener", msg);
 
-            gpscur.setText("내 위치 : " + latitude + ", " + longitude);
-            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+            latitude = map(latitude,lamax,lamin,0.0,1000.0);
+            longitude = map(longitude,lomax,lomin,0.0,1000.0);
+
+            gpscur.setText("" + String.format("%.2f", latitude) +" , "+String.format("%.2f", longitude) );
+
+            //Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
         }
 
         public void onProviderDisabled(String provider) {
@@ -383,5 +397,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //맵함수
+    public Double map(Double x, Double in_min, Double in_max, Double out_min, Double out_max)
+    {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    }
 
 }
