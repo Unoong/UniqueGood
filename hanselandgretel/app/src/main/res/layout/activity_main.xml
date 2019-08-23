@@ -23,6 +23,8 @@
 
     <Button
         android:id="@+id/question"
+        android:layout_width="380dp"
+        android:layout_height="55dp"
         android:layout_marginStart="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginEnd="15dp"
@@ -34,18 +36,7 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/dod"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-
-        android:textColor="#370045"
-        android:textSize="30sp"
-
-        android:layout_width="380dp"
-        android:layout_height="55dp"
-        android:background="@drawable/btn"
-        android:shadowColor="#F345FF"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="19"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/dod"
@@ -60,23 +51,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.531"
         app:layout_constraintStart_toStartOf="parent"
-<<<<<<< HEAD
         android:background="@drawable/btn_wood"
         android:textColor="#000000"
         app:srcCompat="@drawable/dod" />
-=======
-        app:srcCompat="@drawable/dod"
-        android:background="@drawable/btn"
-        android:shadowColor="#F345FF"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="19"
-
-        />
->>>>>>> ae5e3e69fad188ac9a0bb83af341f7576d494b7e
 
     <Button
-
         android:id="@+id/key"
         android:layout_width="380dp"
         android:layout_height="55dp"
@@ -91,15 +70,7 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textColor="#370045"
-        android:textSize="30sp"
-
-        android:background="@drawable/btn"
-        android:shadowColor="#F345FF"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="19"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/gpscur"

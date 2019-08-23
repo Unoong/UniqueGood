@@ -12,9 +12,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,16 +40,12 @@ public class MainActivity extends AppCompatActivity {
     //현재 단계 저장
     private int stagelevel;
 
-    //private static MediaPlayer backMusic;
+    private static MediaPlayer backMusic;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mReference;
-    private int songs[]; // 음원 목록
-    private int playing = 0; // 현재 연주중인 음원 지시자
-    // MediaPlayer 객체생성
-    MediaPlayer mp;
     ImageView cookie, logo;
     TextView stage, cur, goal, gpscur, gpsgoal;
 
@@ -64,28 +58,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        songs = new int[3];
-        songs[0] = R.raw.bgm;
-        songs[1] = R.raw.bgm2;
-
-        if( mp!=null ) {
-            mp.stop(); // 혹은 pause
-        }
-        mp = MediaPlayer.create(MainActivity.this, songs[ playing ]);
-        mp.start();
-
-        final SoundPool sp = new SoundPool(1,         // 최대 음악파일의 개수
-                AudioManager.STREAM_MUSIC, // 스트림 타입
-                0);        // 음질 - 기본값:0
-
-        // 각각의 재생하고자하는 음악을 미리 준비한다
-        final int soundID = sp.load(this, // 현재 화면의 제어권자
-                R.raw.fanfare,    // 음악 파일
-                1);        // 우선순위
-
-
-
-
 
 
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
@@ -126,9 +98,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         //배경음악
-        //backMusic = MediaPlayer.create(this, R.raw.bgm);
-        //backMusic.setLooping(true);
-        //backMusic.start();
+        backMusic = MediaPlayer.create(this, R.raw.bgm);
+        backMusic.setLooping(true);
+        backMusic.start();
 
         //gsp 설정 해줘야함
         gpscur.setText("위치를 준비중입니다.");
@@ -151,14 +123,6 @@ public class MainActivity extends AppCompatActivity {
                         stagelevel = Integer.parseInt(snapshot.getValue().toString());
 
                         if(stagelevel >= 5){
-
-                            sp.play(soundID, // 준비한 soundID
-                                    1,         // 왼쪽 볼륨 float 0.0(작은소리)~1.0(큰소리)
-                                    1,         // 오른쪽볼륨 float
-                                    0,         // 우선순위 int
-                                    -1,     // 반복회수 int -1:무한반복, 0:반복안함
-                                    0.5f);
-
                             Toast.makeText(getApplicationContext(),"완료하였으므로 데이터를 초기화 합니다",Toast.LENGTH_LONG).show();
                             stagelevel =0;
                         }
@@ -182,13 +146,6 @@ public class MainActivity extends AppCompatActivity {
         question.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if( mp!=null ) {
-                    mp.stop(); // 혹은 pause
-                }
-                playing = 1;
-                mp = MediaPlayer.create(MainActivity.this, songs[ playing ]);
-                mp.start();
-
                 //Intent intent = new Intent(getApplicationContext(),quiz.class);
                 //startActivityForResult(intent,sub);//액티비티 띄우기
                 Intent intent = new Intent(MainActivity.this, QuizActivity.class);
@@ -224,25 +181,25 @@ public class MainActivity extends AppCompatActivity {
     //음악 출력 메서드
     @Override
     protected void onUserLeaveHint() {
-        //backMusic.pause();
+        backMusic.pause();
         super.onUserLeaveHint();
     }
 
     @Override
     protected void onPostResume() {
-        //backMusic.start();
+        backMusic.start();
         super.onPostResume();
     }
 
     @Override
     protected void onDestroy() {
-        //backMusic.stop();
+        backMusic.stop();
         super.onDestroy();
     }
 
     @Override
     public void onBackPressed() {
-        //backMusic.stop();
+        backMusic.stop();
         super.onBackPressed();
     }
 
