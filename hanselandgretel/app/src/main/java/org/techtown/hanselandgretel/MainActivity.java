@@ -12,7 +12,9 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     //현재 단계 저장
     private int stagelevel;
 
-    private static MediaPlayer backMusic;
+    //private static MediaPlayer backMusic;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -49,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
     ImageView cookie, logo;
     TextView stage, cur, goal, gpscur, gpsgoal;
 
+    //***송스***
+    private int songs[];
+    private int playing = 0;
+    MediaPlayer mp;
 
     private Double lamin,lamax, lomin, lomax;
 
@@ -72,6 +78,22 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mReference = mFirebaseDatabase.getReference();
+
+        songs = new int[6];
+        songs[5] = R.raw.bgm;
+        songs[0] = R.raw.bgm0;
+        songs[1] = R.raw.bgm1;
+        songs[2] = R.raw.bgm2;
+        songs[3] = R.raw.bgm3;
+        songs[4] = R.raw.bgm4;
+
+        if( mp!=null ) {
+            mp.stop(); // 혹은 pause
+        }
+        playing=5;
+        mp = MediaPlayer.create(MainActivity.this, songs[ playing ]);
+        mp.start();
+
 
         if(mFirebaseUser == null){
             startActivity(new Intent(MainActivity.this, AuthActivity.class));
@@ -98,9 +120,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         //배경음악
-        backMusic = MediaPlayer.create(this, R.raw.bgm);
+        /*backMusic = MediaPlayer.create(this, R.raw.bgm);
         backMusic.setLooping(true);
-        backMusic.start();
+        backMusic.start();*/
 
         //gsp 설정 해줘야함
         gpscur.setText("위치를 준비중입니다.");
@@ -125,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                         if(stagelevel >= 5){
                             Toast.makeText(getApplicationContext(),"완료하였으므로 데이터를 초기화 합니다",Toast.LENGTH_LONG).show();
                             stagelevel =0;
+
                         }
                         Log.d("mian stage level: ", ""+stagelevel);
                     stage.setText(String.valueOf(stagelevel));
@@ -148,6 +171,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Intent intent = new Intent(getApplicationContext(),quiz.class);
                 //startActivityForResult(intent,sub);//액티비티 띄우기
+
+
+                if(playing  != stagelevel) {
+                    if( mp!=null ) {
+                        mp.stop(); // 혹은 pause
+                    }
+                    playing = stagelevel;
+                    mp = MediaPlayer.create(MainActivity.this, songs[playing]);
+                    mp.start();
+                }
+
                 Intent intent = new Intent(MainActivity.this, QuizActivity.class);
                 Log.d("stage level btn : ", ""+stagelevel);
                 intent.putExtra("stagelevel", stagelevel);
@@ -181,25 +215,26 @@ public class MainActivity extends AppCompatActivity {
     //음악 출력 메서드
     @Override
     protected void onUserLeaveHint() {
-        backMusic.pause();
+        //backMusic.pause();
         super.onUserLeaveHint();
     }
 
     @Override
     protected void onPostResume() {
-        backMusic.start();
+        //backMusic.start();
         super.onPostResume();
     }
 
     @Override
     protected void onDestroy() {
-        backMusic.stop();
+        //backMusic.stop();
         super.onDestroy();
     }
 
     @Override
     public void onBackPressed() {
-        backMusic.stop();
+        //backMusic.stop();
+        //mp.stop();
         super.onBackPressed();
     }
 
@@ -211,6 +246,34 @@ public class MainActivity extends AppCompatActivity {
         alert.setTitle("정답을 입력하세요");
         alert.setMessage("");
 
+        //사운드풀 빵빠레
+        final SoundPool sp = new SoundPool(1,         // 최대 음악파일의 개수
+                AudioManager.STREAM_MUSIC, // 스트림 타입
+                0);        // 음질 - 기본값:0
+
+        // 각각의 재생하고자하는 음악을 미리 준비한다
+        final int soundID = sp.load(this, // 현재 화면의 제어권자
+                R.raw.fanfare,    // 음악 파일
+                1);        // 우선순위
+
+        final SoundPool ok = new SoundPool(1,         // 최대 음악파일의 개수
+                AudioManager.STREAM_MUSIC, // 스트림 타입
+                0);        // 음질 - 기본값:0
+
+        // 각각의 재생하고자하는 음악을 미리 준비한다
+        final int soundID2 = ok.load(this, // 현재 화면의 제어권자
+                R.raw.ok,    // 음악 파일
+                1);
+
+        final SoundPool no = new SoundPool(1,         // 최대 음악파일의 개수
+                AudioManager.STREAM_MUSIC, // 스트림 타입
+                0);        // 음질 - 기본값:0
+
+        // 각각의 재생하고자하는 음악을 미리 준비한다
+        final int soundID3 = no.load(this, // 현재 화면의 제어권자
+                R.raw.no,    // 음악 파일
+                1);
+
 
         final EditText name = new EditText(this);
         alert.setView(name);
@@ -221,10 +284,33 @@ public class MainActivity extends AppCompatActivity {
                 if(answer.equalsIgnoreCase(answers[stagelevel]))
                 {
                     Toast.makeText(getApplicationContext(),"정답입니다!",Toast.LENGTH_LONG).show();
+
+                    ok.play(soundID2, // 준비한 soundID
+                            1,         // 왼쪽 볼륨 float 0.0(작은소리)~1.0(큰소리)
+                            1,         // 오른쪽볼륨 float
+                            0,         // 우선순위 int
+                            0,     // 반복회수 int -1:무한반복, 0:반복안함
+                            0.5f);
+
+                    if( mp!=null ) {
+                        mp.stop(); // 혹은 pause
+                    }
+                    playing = 5;
+                    mp = MediaPlayer.create(MainActivity.this, songs[ playing ]);
+                    mp.start();
+
+
                     stagelevel++;
                     if(stagelevel >= 5) {
                         Toast.makeText(getApplicationContext(), "미션 Clear!!!--Ending", Toast.LENGTH_LONG).show();
                         stagelevel =0;
+                        mp.stop();
+                        sp.play(soundID, // 준비한 soundID
+                                1,         // 왼쪽 볼륨 float 0.0(작은소리)~1.0(큰소리)
+                                1,         // 오른쪽볼륨 float
+                                0,         // 우선순위 int
+                                0,     // 반복회수 int -1:무한반복, 0:반복안함
+                                0.5f);
                     }
                     stage.setText(String.valueOf(stagelevel));
 
@@ -238,6 +324,12 @@ public class MainActivity extends AppCompatActivity {
                 else
                 {
                     Toast.makeText(getApplicationContext(),"틀렸습니다!",Toast.LENGTH_LONG).show();
+                    no.play(soundID3, // 준비한 soundID
+                            1,         // 왼쪽 볼륨 float 0.0(작은소리)~1.0(큰소리)
+                            1,         // 오른쪽볼륨 float
+                            0,         // 우선순위 int
+                            0,     // 반복회수 int -1:무한반복, 0:반복안함
+                            0.5f);
                 }
             }
         });
