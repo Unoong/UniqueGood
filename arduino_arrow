@@ -1,0 +1,35 @@
+#include <Stepper.h>
+#define STEPS 2037
+Stepper myStepper(STEPS, 8, 10, 9, 11);
+ 
+int Control = A0;
+int Steps;
+int motorSpeed;
+ 
+void setup()
+{
+  Serial.begin(9600);
+}
+ 
+void loop()
+{
+  Control = analogRead(A0);
+  Serial.println(Control);
+  Serial.println();
+ 
+  if( Control < 400 ){
+    Steps = -100;    // when potentiometer turned left, motor rotation is CW
+    motorSpeed = map(Control, 1, 400, 15, 5); // Map potentiometer to </span><span style="font-family: "맑은 고딕", sans-serif;">the motor speed
+   } 
+  else if (Control > 700){
+   Steps = 100;  // when potentiometer turned right, motor rotation is CCW
+   motorSpeed = map(Control, 700, 1024, 5, 15); // Map potentiometer value to the motor speed
+   }
+  else if (Control > 400 && Control <700){   // When potentiometer is center, stop rotation
+   Steps = 0;
+  }
+ 
+  myStepper.setSpeed(motorSpeed); // Rotation Speed
+  myStepper.step(Steps); // Rotate angle as Steps
+  delay(10);
+}
