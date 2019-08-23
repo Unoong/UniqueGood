@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/layout"
+    android:background="@drawable/background"
     tools:context=".QuizActivity">
 
     <view
@@ -22,17 +23,21 @@
 
     <ImageView
         android:id="@+id/qimg"
-        android:layout_width="409dp"
-        android:layout_height="403dp"
+        android:layout_width="335dp"
+        android:layout_height="310dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="80dp"
         app:layout_constraintBottom_toTopOf="@+id/story"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/story"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="265dp"
+        android:layout_height="183dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
