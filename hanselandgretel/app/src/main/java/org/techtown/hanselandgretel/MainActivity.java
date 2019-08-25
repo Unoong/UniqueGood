@@ -169,8 +169,6 @@ public class MainActivity extends AppCompatActivity {
         question.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(getApplicationContext(),quiz.class);
-                //startActivityForResult(intent,sub);//액티비티 띄우기
 
 
                 if(playing  != stagelevel) {
