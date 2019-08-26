@@ -78,7 +78,7 @@
         android:layout_height="20dp"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="60dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
         android:textColor="#000000"
@@ -95,10 +95,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="32dp"
         android:text="0"
         android:textColor="#F2F2F2"
-        android:textSize="30sp"
+        android:textSize="27sp"
         app:layout_constraintStart_toEndOf="@+id/cookie"
         app:layout_constraintTop_toTopOf="parent" />
 
