@@ -1,35 +1,141 @@
-#include <Stepper.h>
-#define STEPS 2037
-Stepper myStepper(STEPS, 8, 10, 9, 11);
- 
-int Control = A0;
-int Steps;
-int motorSpeed;
- 
+#include "SoftwareSerial.h"
+#include <LiquidCrystal.h>
+#include <Keypad.h>
+#include <Servo.h>
+
+
+Servo locker;
+LiquidCrystal lcd(13, 12, 11, 9, A1, A0);
+char secretCode[4] = {'1', '2', '3', '4'};
+char input[4];
+char key;
+int position = 0;
+int wrong = 0;
+int i = 0;
+int j = 0;
+int pos = 0;
+int a = 0;
+const byte rows = 4;
+const byte cols = 4;
+boolean c = false;
+
+char keys[rows][cols] =
+{
+  {'1', '2', '3', 'A'},
+  {'4', '5', '6', 'B'},
+  {'7', '8', '9', 'C'},
+  {'*', '0', '#', 'D'}
+};
+
+byte rowPins[rows] = {8, 7, 6, 5}; //R1, R2, R3, R4 단자가 연결된 아두이노 핀 번호
+byte colPins[cols] = {4, 3, 2, 1}; //C1, C2, C3, C4 단자가 연결된 아두이노 핀 번호
+
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, rows, cols);
+
+void input_key();
+void password();
+void password_check();
+
 void setup()
 {
   Serial.begin(9600);
+  lcd.begin(16, 2);
+  locker.attach(10);//서보모터의 10번핀을 연결
+  locker.write(90);
+  pinMode(10, INPUT);
 }
- 
+
 void loop()
 {
-  Control = analogRead(A0);
-  Serial.println(Control);
-  Serial.println();
- 
-  if( Control < 400 ){
-    Steps = -100;    // when potentiometer turned left, motor rotation is CW
-    motorSpeed = map(Control, 1, 400, 15, 5); // Map potentiometer to </span><span style="font-family: "맑은 고딕", sans-serif;">the motor speed
-   } 
-  else if (Control > 700){
-   Steps = 100;  // when potentiometer turned right, motor rotation is CCW
-   motorSpeed = map(Control, 700, 1024, 5, 15); // Map potentiometer value to the motor speed
-   }
-  else if (Control > 400 && Control <700){   // When potentiometer is center, stop rotation
-   Steps = 0;
+  while (a == 0)
+  {
+    input_key();            // Password Input Mode
+    password();             // Confirm Password
+    password_check();       // Display current state
   }
  
-  myStepper.setSpeed(motorSpeed); // Rotation Speed
-  myStepper.step(Steps); // Rotate angle as Steps
-  delay(10);
+  int sum = a;              // State Flag
+  if (sum == 1)             // Correct Password & registered Fingerprint
+  {
+    lcd.clear();
+    lcd.setCursor(0, 0);//커서위치를 0,0으로 이동시켜준다.
+    pinMode(10, OUTPUT);//핀모드를 10번핀을 출력으로
+
+    locker.write(180);      // OPENING
+    lcd.print("perfect complete");
+    delay(2000);
+    pinMode(10, INPUT);
+    key = keypad.waitForKey();
+    if (key == '*')
+    {
+      a = 0;                // Clear Flag
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      pinMode(10, OUTPUT);
+      locker.write(0);     // Closing
+      lcd.print("    Lock ON");
+      delay(2000);
+      pinMode(10, INPUT);
+    }
+  }
+}
+
+void input_key()
+{
+  lcd.clear();
+  lcd.setCursor(0, 0);//커서의 위치를 0,0으로 위치해준다
+  lcd.print("    Password");
+  for (i = 0; i < 4; i++)
+  {
+    key = keypad.waitForKey(); //키패드에서 waitForKey를 사용해서 키번호를 key에 저장
+    input[i] = key;
+    lcd.setCursor(i + 6, 1);
+    lcd.print("*");
+    Serial.print(input[i], DEC);
+    Serial.print("*");
+    if (i == 3)
+    {
+      Serial.println("");
+    }
+  }
+}
+
+void password()
+{
+  wrong = 0;
+  for (j = 0; j < 4; j++)
+  {
+    if (secretCode[j] == input[j]) //secretCode[j] = 비밀번호를 가지고있는 배열, input[j] = 키패드로 입력하는 번호의 배열 ,같으면 맞는 비밀번호
+    {
+    }
+    else if (secretCode[j] != input[j]) //다르면 틀린 비밀번호
+    {
+      wrong += 1; // 틀리기떄문에 wrong에 1을 더해준다.
+    }
+  }
+}
+
+void password_check() //wrong에 들어간 0,1을 보고 참거짓을 판단하는 함수
+{
+  if (wrong == 0)
+  {
+    Serial.println("correct");
+    lcd.clear(); //안에있는것을 지워주는 역할
+    lcd.setCursor(0, 0);
+    lcd.print("      PASS");
+    delay(2000);
+    a = 1; //a=1이면 패스워드가 최종적으로 맞다는것을 확인하기위해 넣은 변수
+    lcd.clear();
+  }
+  else if (wrong != 0)
+  {
+    Serial.println("wrong");
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("     wrong");
+    delay(2000);
+    a = 0;
+    lcd.clear();
+    wrong = 0;
+  }
 }
